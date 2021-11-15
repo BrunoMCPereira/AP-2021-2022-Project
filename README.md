@@ -71,7 +71,7 @@ No nível **Normal**, o jogador automático opta pela seguinte estratégia:
 
 1. Seleciona a casa mais à esquerda possível para espalhar sementes.
 
-No nível **Avançado**´, o  jogador automático opta pelos seguintes passos, por ordem:
+No nível **Avançado**, o  jogador automático opta pelos seguintes passos, por ordem:
 
 1. Se possível, seleciona uma casa que permita capturar as peças de uma das casas do oponente (ver Regra B).
 2. Se possível, seleciona uma casa que permita terminar no poço, de forma a jogar novamente. Se existirem várias na mesma situação, opta pela mais à esquerda possível (ver Regra A).
@@ -363,15 +363,15 @@ A comparação também pode ser feita recorrendo a alguns IDEs ou editores de te
 
 Selecione os dois ficheiros a comparar (selecione um, e selecione o outro enquanto pressiona na tecla `Ctrl`).
 
-![](figures\vsc_two_file_selection.png)
+![](figures/vsc_two_file_selection.png)
 
 Com os dois ficheiros selecionados, utilize o botão direito do rato em cima da seleção para obter um menu. Escolha *Compare Selected*.
 
-![](figures\vsc_compare_selected.png)
+![](figures/vsc_compare_selected.png)
 
 O *Visual Studio Code* apresenta os dois ficheiros com as diferenças a vermelho e verde. Caso não existam diferenças, as linhas dos dois ficheiros surgem sem cores.
 
-![](figures\vsc_diff.png)
+![](figures/vsc_diff.png)
 
 ## Entrega
 
