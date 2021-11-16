@@ -105,7 +105,7 @@ Regista um novo jogador.
 
 Entrada:
 
-    PR NomeJogador
+    RJ NomeJogador
 
 Saída com sucesso:
 
@@ -125,7 +125,7 @@ Lista os jogadores registados, indicando os registos de jogos jogados. Os jogado
 
 Entrada:
 
-    PL
+    LJ
 
 Saída com sucesso:
 
