@@ -17,7 +17,7 @@
   - [Gravar (G)](#gravar-g)
   - [Ler (L)](#ler-l)
 - [Estrutura do projeto](#estrutura-do-projeto)
-- [Testes de *input*/*ouput*](#testes-de-inputouput)
+- [Testes de *input*/*output*](#testes-de-inputoutput)
   - [Utilização de testes](#utilização-de-testes)
 - [Entrega](#entrega)
 - [Prova de Autoria](#prova-de-autoria)
@@ -29,8 +29,8 @@
 
 | Data                      | Evento                               |
 | ------------------------- | ------------------------------------ |
-| 15/11/2021                | Disponibilização do enunciado.       |
-| 23/01/2022 23:59:59 GMT   | Entrega final do trabalho.           |
+| 16/11/2021                | Disponibilização do enunciado.       |
+| 16/01/2022 23:59:59 GMT   | Entrega final do trabalho.           |
 | 25/01/2022 --- 04/02/2022 | Provas de autoria.                   |
 
 ## Descrição
@@ -336,9 +336,9 @@ Para efetuar a atualizações:
 
         git checkout upstream/main README.md
 
-## Testes de *input*/*ouput*
+## Testes de *input*/*output*
 
-O projeto é validado através de um conjunto de baterias de teste de *input*/*ouput*.
+O projeto é validado através de um conjunto de baterias de teste de *input*/*output*.
 
 Cada bateria é constituída por um ficheiro de entrada e outro e saída. O ficheiro de entrada contém uma sequência de instruções a passar pelo programa que, por sua vez, deve produzir uma sequência de saída *exatamente* igual ao ficheiro de saída. A comparação será feita *byte* a *byte*, pelo que não podem existir quaisquer diferenças para o programa ser considerado válido.
 
