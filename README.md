@@ -77,6 +77,8 @@ No nível **Avançado**, o  jogador automático opta pelos seguintes passos, por
 2. Se possível, seleciona uma casa que permita terminar no poço, de forma a jogar novamente. Se existirem várias na mesma situação, opta pela mais à esquerda possível (ver Regra A).
 3. Seleciona a casa mais à direita possível para espalhar sementes.
 
+O nome do jogador autómatico, para efeitos de listagem de jogadores, é `CPU`.
+
 ## Instruções
 
 Na descrição das várias instruções é indicada a sua sintaxe. Os argumentos são separados por espaços em branco, e cada linha é terminada por um caráter fim de linha.
@@ -143,7 +145,7 @@ Saída com insucesso:
 
 Inicia um novo jogo entre dois jogadores.
 
-`NomeJogadorA` e `NomeJogadorB` sãos os nomes dos jogadores A e B, respetivamente.
+`NomeJogadorA` e `NomeJogadorB` são os nomes dos jogadores A e B, respetivamente.
 
 Entrada:
 
@@ -151,9 +153,13 @@ Entrada:
 
 Saída com sucesso:
 
-    Jogo iniciar com sucesso.
+    Jogo iniciado com sucesso.
 
 Saída com insucesso:
+
+- Quando já existe um jogo em curso:
+
+      Existe um jogo em curso.
 
 - Quando um dos jogadores indicados não se encontra registado:
 
@@ -246,7 +252,7 @@ Saída com insucesso:
 
 ### Desistir de jogo (D)
 
-Regista a desistência do jogo por um ou dois jogador. No jogo automático apenas o jogador humano pode desistir. É registada uma derrota para cada jogador que desisti (mesmo no caso de ambos desistirem).
+Regista a desistência do jogo por um ou dois jogador. No jogo automático apenas o jogador humano pode desistir. É registada uma derrota para cada jogador que desistiu, ou para ambos, caso os dois desistam. É registada uma vitória para o jogador que não desistiu.
 
 `NomeJogador` representa o nome de um jogador que participa no jogo em curso.
 
