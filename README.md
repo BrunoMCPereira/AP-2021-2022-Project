@@ -181,6 +181,10 @@ Saída com sucesso:
 
 Saída com insucesso:
 
+- Quando já existe um jogo em curso:
+
+      Existe um jogo em curso.
+
 - Quando o jogador indicado não se encontra registado:
 
       Jogador inexistente.
