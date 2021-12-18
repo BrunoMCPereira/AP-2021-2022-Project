@@ -7,28 +7,28 @@ def comando(instrucao):
             return "Jogador existente."
         else: return "Jogador registado com sucesso."
     
-    elif instrucao[0]=='LJ': #Listar Jogadores
+    elif instrucao[0]=='LJ' and len(instrucao)==1: #Listar Jogadores
         pass
 
-    elif instrucao[0]=='IJ': #Iniciar Jogo
+    elif instrucao[0]=='IJ' and len(instrucao)==3: #Iniciar Jogo
         pass
 
-    elif instrucao[0]=='IJA': #Iniciar Jogo Automático
+    elif instrucao[0]=='IJA' and len(instrucao)==3: #Iniciar Jogo Automático
         pass
 
-    elif instrucao[0]=='DJ': #Detalhes de Jogo
+    elif instrucao[0]=='DJ' and len(instrucao)==1: #Detalhes de Jogo
         pass
 
-    elif instrucao[0]=='J': #Efetuar Jogada
+    elif instrucao[0]=='J' and len(instrucao)==3: #Efetuar Jogada
         pass
 
-    elif instrucao[0]=='D': #Desistir de Jogo
+    elif instrucao[0]=='D' and len(instrucao)>1 and len(instrucao)<=3: #Desistir de Jogo
         pass
 
-    elif instrucao[0]=='G': #Gravar
+    elif instrucao[0]=='G' and len(instrucao)==2: #Gravar
         pass
 
-    elif instrucao[0]=='L': #Ler
+    elif instrucao[0]=='L' and len(instrucao)==2: #Ler
         pass
 
     else: return None
