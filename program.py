@@ -1,4 +1,4 @@
-from view import cli
+import cli
 
 def main():
     cli.main()
