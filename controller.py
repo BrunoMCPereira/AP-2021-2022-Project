@@ -33,7 +33,7 @@ def iniciar(jogador_a, jogador_b): #Inicia um novo jogo entre dois jogadores e r
         return True #Sucesso
     else: return None #Jogador Inexistente
 
-def detalhes():
+def detalhes(): #Mostra o tabuleiro do jogo em curso
     if model.jogo == {}:
         return None #Não existe jogo em curso
     else:
@@ -45,7 +45,4 @@ def detalhes():
         for i in range(6):
             resultado = resultado + ' [' + str(lista[i+9]) + ']'
         resultado = resultado + ' (' + str(lista[15]) + ')'
-        return resultado
-
-def main():
-    pass
+        return resultado #Sucesso
