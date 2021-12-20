@@ -1,2 +1,2 @@
 jogadores = []
-jogos = []
+jogo = {}

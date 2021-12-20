@@ -24,10 +24,9 @@ def iniciar(jogador_a, jogador_b): #Inicia um novo jogo entre dois jogadores e r
         elif model.jogadores[i].get('Jogador') == jogador_b:
             flag += 1
     if flag == 2:
-        for i in range(len(model.jogos)):
-            if list(model.jogos[i].values()) == [jogador_a, jogador_b] or list(model.jogos[i].values()) == [jogador_b, jogador_a]:
-                return False #Jogo em curso
-        model.jogos.append({'JogadorA': jogador_a, 'JogadorB': jogador_b})
+        if model.jogo != {}:
+            return False #Jogo em curso
+        model.jogo.update({'JogadorA': jogador_a, 'JogadorB': jogador_b})
         return True #Sucesso
     else: return None #Jogador Inexistente
 
