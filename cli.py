@@ -8,7 +8,10 @@ def comando(instrucao):
         else: return "Jogador registado com sucesso."
     
     elif instrucao[0]=='LJ' and len(instrucao)==1: #Listar Jogadores
-        pass
+        resultado = controller.listar()
+        if resultado == None:
+            return "Não existem jogadores"
+        else: return resultado
 
     elif instrucao[0]=='IJ' and len(instrucao)==3: #Iniciar Jogo
         pass
