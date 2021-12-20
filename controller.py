@@ -8,9 +8,12 @@ def registar(player): #Adiciona e retorna True quando o jogador não existe, ret
 
 def listar(): #Retorna os valores das chaves 'Jogador' de cada dicionário na lista jogadores
     resultado = []
-    for i in range(len(model.jogadores)):
-        resultado.append(model.jogadores[i].get('Jogador'))
-    return resultado
+    if len(model.jogadores)==0:
+        return None
+    else:
+        for i in range(len(model.jogadores)):
+            resultado.append(model.jogadores[i].get('Jogador'))
+        return resultado
 
 def main():
     pass
