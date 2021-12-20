@@ -25,7 +25,10 @@ def comando(instrucao):
         pass
 
     elif instrucao[0]=='DJ' and len(instrucao)==1: #Detalhes de Jogo (DJ)
-        pass
+        resultado = controller.detalhes()
+        if resultado == None:
+            return "Não existe jogo em curso."
+        else: return resultado
 
     elif instrucao[0]=='J' and len(instrucao)==3: #Efetuar Jogada (J NomeJogador Posição)
         pass

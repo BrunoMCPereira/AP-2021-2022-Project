@@ -18,7 +18,8 @@ def listar(): #Retorna os valores das chaves 'Jogador' de cada dicionário na li
 
 def iniciar(jogador_a, jogador_b): #Inicia um novo jogo entre dois jogadores e retorna a saída com sucesso ou insucesso
     flag = 0
-    for i in range(len(model.jogadores)): #Incrementa um valor na flag em cada jogador encontrado, só conta uma vez se forem o mesmo
+    for i in range(len(model.jogadores)): 
+        #Incrementa um valor na flag em cada jogador encontrado, só conta uma vez se forem o mesmo
         if model.jogadores[i].get('Jogador') == jogador_a:
             flag += 1
         elif model.jogadores[i].get('Jogador') == jogador_b:
@@ -26,9 +27,25 @@ def iniciar(jogador_a, jogador_b): #Inicia um novo jogo entre dois jogadores e r
     if flag == 2:
         if model.jogo != {}:
             return False #Jogo em curso
-        model.jogo.update({'JogadorA': jogador_a, 'JogadorB': jogador_b})
+        model.jogo.update({
+        'JogadorA': jogador_a, 'A1':4, 'A2':4, 'A3':4, 'A4':4, 'A5':4, 'A6':4, 'A7':0, 
+        'JogadorB': jogador_b, 'B1':4, 'B2':4, 'B3':4, 'B4':4, 'B5':4, 'B6':4, 'B7':0})
         return True #Sucesso
     else: return None #Jogador Inexistente
+
+def detalhes():
+    if model.jogo == {}:
+        return None #Não existe jogo em curso
+    else:
+        lista = list(model.jogo.values())
+        resultado = str(lista[0])
+        for i in range(6):
+            resultado = resultado + ' [' + str(lista[i+1]) + ']'
+        resultado = resultado + ' (' + str(lista[7]) + ')' + '\n' + str(lista[8])
+        for i in range(6):
+            resultado = resultado + ' [' + str(lista[i+9]) + ']'
+        resultado = resultado + ' (' + str(lista[15]) + ')'
+        return resultado
 
 def main():
     pass
