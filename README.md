@@ -244,7 +244,7 @@ Saída com insucesso:
 
 - Quando não existe um jogo em curso:
 
-      Não existem jogo em curso.
+      Não existe jogo em curso.
 
 - Quando o jogador indicado não existe:
 
