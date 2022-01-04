@@ -8,12 +8,18 @@ def registar(player): #Adiciona e retorna True quando o jogador não existe, ret
     return True #Sucesso
 
 def listar(): #Retorna os valores das chaves 'Jogador' de cada dicionário na lista jogadores
-    resultado = []
+    resultado = ""
     if len(model.jogadores)==0:
         return None #Sem jogadores
     else:
         for i in range(len(model.jogadores)):
-            resultado.append(model.jogadores[i].get('Jogador'))
+            resultado += model.jogadores[i].get('Jogador') 
+            resultado += (" ") + str(model.jogadores[i].get('Jogos'))
+            resultado += (" ") + str(model.jogadores[i].get('Vitorias'))
+            resultado += (" ") + str(model.jogadores[i].get('Empates'))
+            resultado += (" ") + str(model.jogadores[i].get('Derrotas'))
+            if i != len(model.jogadores)-1:
+                resultado += ("\n")   
         return resultado #Sucesso, lista de jogadores
 
 def iniciar(jogador_a, jogador_b): #Inicia um novo jogo entre dois jogadores e retorna a saída com sucesso ou insucesso
