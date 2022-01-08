@@ -34,7 +34,12 @@ def comando(instrucao):
         pass
 
     elif instrucao[0]=='D' and len(instrucao)>1 and len(instrucao)<=3: #Desistir de Jogo (D NomeJogador NomeJogador)
-        pass
+        resultado = controller.desistir(instrucao)
+        if resultado == None:
+            return "Não existe jogo em curso."
+        elif resultado == False:
+            return "Jogador não está em jogo ou são iguais"
+        else: return resultado
 
     elif instrucao[0]=='G' and len(instrucao)==2: #Gravar (G NomeFicheiro)
         pass

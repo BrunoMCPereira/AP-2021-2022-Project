@@ -52,3 +52,59 @@ def detalhes(): #Mostra o tabuleiro do jogo em curso
             resultado = resultado + ' [' + str(lista[i+9]) + ']'
         resultado = resultado + ' (' + str(lista[15]) + ')'
         return resultado #Sucesso
+
+def desistir(instrucao): #Mostra o tabuleiro do jogo em curso
+    if model.jogo == {}:
+        return None #Não existe jogo em curso
+    else:
+        instrucao.remove('D')
+        if len(instrucao) == 1:
+            if instrucao[0] != model.jogo.get('JogadorA') and instrucao[0] != model.jogo.get('JogadorB'):
+                return False #Jogador não está em jogo
+            else:
+                for i in range(len(model.jogadores)):
+                    if model.jogadores[i].get('Jogador') == instrucao[0]:
+                        derrotas = model.jogadores[i].get('Derrotas') + 1
+                        model.jogadores[i].update({
+                            'Derrotas' : derrotas
+                        })
+                        break
+                if instrucao[0] == model.jogo.get('JogadorA'):
+                    for i in range(len(model.jogadores)):
+                        if model.jogadores[i].get('Jogador') == model.jogo.get('JogadorB'):
+                            vitorias = model.jogadores[i].get('Vitorias') + 1
+                            model.jogadores[i].update({
+                                'Vitorias' : vitorias
+                            })
+                            break
+                else:
+                    for i in range(len(model.jogadores)):
+                        if model.jogadores[i].get('Jogador') == model.jogo.get('JogadorA'):
+                            vitorias = model.jogadores[i].get('Vitorias') + 1
+                            model.jogadores[i].update({
+                                'Vitorias' : vitorias
+                            })
+                            break
+                resultado = f'Desistiu o {instrucao[0]}'
+                model.jogo = {}
+        else: 
+            if (instrucao[0] != model.jogo.get('JogadorA') and instrucao[0] != model.jogo.get('JogadorB')) or (instrucao[1] != model.jogo.get('JogadorA') and instrucao[1] != model.jogo.get('JogadorB')) or (instrucao[0] == instrucao[1]):
+                return False #Jogador não está em jogo ou são iguais
+            else:
+                for i in range(len(model.jogadores)):
+                    if model.jogadores[i].get('Jogador') == instrucao[0]:
+                        derrotas = model.jogadores[i].get('Derrotas') + 1
+                        model.jogadores[i].update({
+                            'Derrotas' : derrotas
+                        })
+                        break
+                for i in range(len(model.jogadores)):
+                    if model.jogadores[i].get('Jogador') == instrucao[1]:
+                        derrotas = model.jogadores[i].get('Derrotas') + 1
+                        model.jogadores[i].update({
+                            'Derrotas' : derrotas
+                        })
+                        break
+            resultado = 'Desistiram os dois'
+            model.jogo = {}
+        return resultado #Sucesso
