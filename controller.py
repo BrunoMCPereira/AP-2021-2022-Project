@@ -58,53 +58,58 @@ def desistir(instrucao): #Mostra o tabuleiro do jogo em curso
         return None #Não existe jogo em curso
     else:
         instrucao.remove('D')
-        if len(instrucao) == 1:
+        if len(instrucao) == 1: #1 jogador
             if instrucao[0] != model.jogo.get('JogadorA') and instrucao[0] != model.jogo.get('JogadorB'):
-                return False #Jogador não está em jogo
+                for i in range(len(model.jogadores)):
+                    if model.jogadores[i].get('Jogador') == instrucao[0]:
+                        return False #Jogador não participa no jogo em curso.
+                return True #Jogador inexistente.
             else:
                 for i in range(len(model.jogadores)):
                     if model.jogadores[i].get('Jogador') == instrucao[0]:
-                        derrotas = model.jogadores[i].get('Derrotas') + 1
                         model.jogadores[i].update({
-                            'Derrotas' : derrotas
+                            'Derrotas' : model.jogadores[i].get('Derrotas') + 1
                         })
                         break
                 if instrucao[0] == model.jogo.get('JogadorA'):
                     for i in range(len(model.jogadores)):
                         if model.jogadores[i].get('Jogador') == model.jogo.get('JogadorB'):
-                            vitorias = model.jogadores[i].get('Vitorias') + 1
                             model.jogadores[i].update({
-                                'Vitorias' : vitorias
+                                'Vitorias' : model.jogadores[i].get('Vitorias') + 1
                             })
                             break
                 else:
                     for i in range(len(model.jogadores)):
                         if model.jogadores[i].get('Jogador') == model.jogo.get('JogadorA'):
-                            vitorias = model.jogadores[i].get('Vitorias') + 1
                             model.jogadores[i].update({
-                                'Vitorias' : vitorias
+                                'Vitorias' : model.jogadores[i].get('Vitorias') + 1
                             })
                             break
-                resultado = f'Desistiu o {instrucao[0]}'
                 model.jogo = {}
-        else: 
-            if (instrucao[0] != model.jogo.get('JogadorA') and instrucao[0] != model.jogo.get('JogadorB')) or (instrucao[1] != model.jogo.get('JogadorA') and instrucao[1] != model.jogo.get('JogadorB')) or (instrucao[0] == instrucao[1]):
-                return False #Jogador não está em jogo ou são iguais
+        else: #2 jogadores
+            flag = False #Mantém-se False se o primeiro não existir
+            if (instrucao[0] != model.jogo.get('JogadorA') and instrucao[0] != model.jogo.get('JogadorB')) or (instrucao[1] != model.jogo.get('JogadorA') and instrucao[1] != model.jogo.get('JogadorB')) or (instrucao[0] == instrucao[1]): #Não estão em jogo ou são iguais
+                for i in range(len(model.jogadores)):
+                    if model.jogadores[i].get('Jogador') == instrucao[0]: #Se o primeiro existe
+                        flag = True #Primeiro existe
+                        break
+                if flag == False: return True #Se o primeiro não existe, Jogador inexistente
+                for i in range(len(model.jogadores)):
+                    if model.jogadores[i].get('Jogador') == instrucao[1]: #Se o segundo existe
+                        return False #Ambos existem: Jogador não participa no jogo em curso.
+                return True #O segundo não existe: Jogador inexistente.
             else:
                 for i in range(len(model.jogadores)):
                     if model.jogadores[i].get('Jogador') == instrucao[0]:
-                        derrotas = model.jogadores[i].get('Derrotas') + 1
                         model.jogadores[i].update({
-                            'Derrotas' : derrotas
+                            'Derrotas' : model.jogadores[i].get('Derrotas') + 1
                         })
                         break
                 for i in range(len(model.jogadores)):
                     if model.jogadores[i].get('Jogador') == instrucao[1]:
-                        derrotas = model.jogadores[i].get('Derrotas') + 1
                         model.jogadores[i].update({
-                            'Derrotas' : derrotas
+                            'Derrotas' : model.jogadores[i].get('Derrotas') + 1
                         })
                         break
-            resultado = 'Desistiram os dois'
             model.jogo = {}
-        return resultado #Sucesso
+        return 'Jogo terminado com sucesso.' #Sucesso

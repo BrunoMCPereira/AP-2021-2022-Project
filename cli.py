@@ -37,8 +37,10 @@ def comando(instrucao):
         resultado = controller.desistir(instrucao)
         if resultado == None:
             return "Não existe jogo em curso."
+        elif resultado == True:
+            return "Jogador inexistente."
         elif resultado == False:
-            return "Jogador não está em jogo ou são iguais"
+            return "Jogador não participa no jogo em curso."
         else: return resultado
 
     elif instrucao[0]=='G' and len(instrucao)==2: #Gravar (G NomeFicheiro)
