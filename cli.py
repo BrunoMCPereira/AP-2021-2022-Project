@@ -28,13 +28,9 @@ def comando(instrucao):
     elif instrucao[0]=='L' and len(instrucao)==2: #Ler (L NomeFicheiro)
         pass
 
-    else: return None
+    else: return "Instrução inválida."
 
 def main():
     while True:
         inserir = input()
-        instrucao = inserir.split()
-        resultado = comando(instrucao)
-        if resultado == None:
-            print("Instrução inválida.")
-        else: print (resultado)
+        print (comando(inserir.split()))
