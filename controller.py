@@ -57,7 +57,7 @@ def desistir(instrucao): #Mostra o tabuleiro do jogo em curso
     if model.jogo == {}:
         return "Não existe jogo em curso."
     else:
-        instrucao.remove('D')
+        instrucao.pop(0)
         if len(instrucao) == 1: #1 jogador
             if instrucao[0] != model.jogo.get('JogadorA') and instrucao[0] != model.jogo.get('JogadorB'):
                 for i in range(len(model.jogadores)):
