@@ -118,23 +118,23 @@ def desistir(instrucao): #Mostra o tabuleiro do jogo em curso
 
 def gravar(nome_ficheiro): #Grava o programa num ficheiro
     jogadores_string_values = "" #String onde guardo os values dos dicionarios dos jogadores
-    with open(f'{nome_ficheiro}.txt', 'w') as convert_file: #
+    with open(f'{nome_ficheiro}.txt', 'w') as f: #
         for i in model.jogadores: #i representa cada dicionário de jogador
             for j in i.values():#j representa cada valor do dicionario de jogador
                 jogadores_string_values += str(j) + (" ")
-        convert_file.write(jogadores_string_values) #escreve os values de todos os dicionários de jogadorees com (" ") entre eles
-        convert_file.write("\n") #Enter para manter os valores dos jogadores na primeira linha e os valores do jogo na segunda linha
+        f.write(jogadores_string_values) #escreve os values de todos os dicionários de jogadorees com (" ") entre eles
+        f.write("\n") #Enter para manter os valores dos jogadores na primeira linha e os valores do jogo na segunda linha
         jogo_string_values = "" #String onde guardo os values do dicionário do jogo
         for i in model.jogo.values(): #cada i representa um valor do dicionário do jogo
             jogo_string_values += str(i) + (" ") 
-        convert_file.write(jogo_string_values) #escreve os values do dicionário do jogo com (" ") entre eles
+        f.write(jogo_string_values) #escreve os values do dicionário do jogo com (" ") entre eles
     return 'Jogo gravado com sucesso.'
 
 def ler(nome_ficheiro): #Abertura do ficheiro em modo leitura
     if path.isfile(f"{nome_ficheiro}.txt") == True:
         model.jogadores.clear() #limpa lista de dicionarios dos jogadores
-        ficheiro_serie = open(f"{nome_ficheiro}.txt", "r", encoding="utf-8") #encoding="utf-8"serve para ler os sinais de pontuação
-        ficheiro = ficheiro_serie.readlines() #guarda informação do ficheiro na variável ficheiro
+        f = open(f"{nome_ficheiro}.txt", "r", encoding="utf-8") #encoding="utf-8"serve para ler os sinais de pontuação
+        ficheiro = f.readlines() #guarda informação do ficheiro a ser lido na variável ficheiro
         jogadores_lista_values = ficheiro[0].split(" ") #string -> lista | ((" ") -> (","))
         jogadores_lista_values.pop(len(jogadores_lista_values)-1) #elimina o ultimo elemento porque é um (" ")
         for i in range(0, (len(jogadores_lista_values) - 4), 5): #i começa a 0 e a len(lista) é sempre reduzida por 4 para contar com os incrementos que damos ao i nas posições da lista, é sempre incremetado por 5 porque em cada loop alteramos 5 keys. elementos da lista usados em cada dicionário = (1º dicionario -> 0, 1, 2, 3, 4), (2º dicionario -> 5, 6, 7, 8, 9) etc...
