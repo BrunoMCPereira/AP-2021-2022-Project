@@ -23,10 +23,10 @@ def comando(instrucao):
         return controller.desistir(instrucao)
 
     elif instrucao[0]=='G' and len(instrucao)==2: #Gravar (G NomeFicheiro)
-        pass
+        return controller.gravar(instrucao[1])
 
     elif instrucao[0]=='L' and len(instrucao)==2: #Ler (L NomeFicheiro)
-        pass
+        return controller.ler(instrucao[1])
 
     else: return "Instrução inválida."
 

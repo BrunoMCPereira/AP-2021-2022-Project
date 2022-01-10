@@ -1,4 +1,6 @@
 import model
+import os.path 
+from os import path
 
 def registar(player): 
     for i in range(len(model.jogadores)): #Verifica se o Jogador já está registado
@@ -113,3 +115,35 @@ def desistir(instrucao): #Mostra o tabuleiro do jogo em curso
                         break
             model.jogo = {}
         return 'Jogo terminado com sucesso.' #Sucesso
+
+def gravar(nome_ficheiro): #Grava o programa num ficheiro
+    jogadores_string_values = "" #String onde guardo os values dos dicionarios dos jogadores
+    with open(f'{nome_ficheiro}.txt', 'w') as convert_file: #
+        for i in model.jogadores: #i representa cada dicionário de jogador
+            for j in i.values():#j representa cada valor do dicionario de jogador
+                jogadores_string_values += str(j) + (" ")
+        convert_file.write(jogadores_string_values) #escreve os values de todos os dicionários de jogadorees com (" ") entre eles
+        convert_file.write("\n") #Enter para manter os valores dos jogadores na primeira linha e os valores do jogo na segunda linha
+        jogo_string_values = "" #String onde guardo os values do dicionário do jogo
+        for i in model.jogo.values(): #cada i representa um valor do dicionário do jogo
+            jogo_string_values += str(i) + (" ") 
+        convert_file.write(jogo_string_values) #escreve os values do dicionário do jogo com (" ") entre eles
+    return 'Jogo gravado com sucesso.'
+
+def ler(nome_ficheiro): #Abertura do ficheiro em modo leitura
+    if path.isfile(f"{nome_ficheiro}.txt") == True:
+        model.jogadores.clear() #limpa lista de dicionarios dos jogadores
+        ficheiro_serie = open(f"{nome_ficheiro}.txt", "r", encoding="utf-8") #encoding="utf-8"serve para ler os sinais de pontuação
+        ficheiro = ficheiro_serie.readlines() #guarda informação do ficheiro na variável ficheiro
+        jogadores_lista_values = ficheiro[0].split(" ") #string -> lista | ((" ") -> (","))
+        jogadores_lista_values.pop(len(jogadores_lista_values)-1) #elimina o ultimo elemento porque é um (" ")
+        for i in range(0, (len(jogadores_lista_values) - 4), 5): #i começa a 0 e a len(lista) é sempre reduzida por 4 para contar com os incrementos que damos ao i nas posições da lista, é sempre incremetado por 5 porque em cada loop alteramos 5 keys. elementos da lista usados em cada dicionário = (1º dicionario -> 0, 1, 2, 3, 4), (2º dicionario -> 5, 6, 7, 8, 9) etc...
+            model.jogadores.append({'Jogador': jogadores_lista_values[i], 'Jogos': int(jogadores_lista_values[i+1]), 'Vitorias': int(jogadores_lista_values[i+2]), 'Empates': int(jogadores_lista_values[i+3]), 'Derrotas': int(jogadores_lista_values[i+4])}) #Ultimos 4 values tem de ser int para poderem ser alterados nas outra funções (ex: D)
+        if len(ficheiro)==2: #apenas lê dicionário de jogo se existir dados de jogo no ficheiro (se tiver sido gravado a meio de um jogo)
+            jogo_lista_values = ficheiro[1].split(" ") #string -> lista | ((" ") -> (","))
+            jogo_lista_values.pop(len(jogo_lista_values)-1) #elimina ultimo elemento (" ")
+            model.jogo.update({ #muda keys do dicionário de jogo atual para keys de dicionário de jogo do ficheiro
+                'JogadorA': jogo_lista_values[0], 'A1':int(jogo_lista_values[1]), 'A2':int(jogo_lista_values[2]), 'A3':int(jogo_lista_values[3]), 'A4':int(jogo_lista_values[4]), 'A5':int(jogo_lista_values[5]), 'A6':int(jogo_lista_values[6]), 'A7':int(jogo_lista_values[7]), 
+                'JogadorB': jogo_lista_values[8], 'B1':int(jogo_lista_values[9]), 'B2':int(jogo_lista_values[10]), 'B3':int(jogo_lista_values[11]), 'B4':int(jogo_lista_values[12]), 'B5':int(jogo_lista_values[13]), 'B6':int(jogo_lista_values[14]), 'B7':int(jogo_lista_values[15])})
+        return 'Jogo lido com sucesso.'
+    return 'Ficheiro inexistente.'
