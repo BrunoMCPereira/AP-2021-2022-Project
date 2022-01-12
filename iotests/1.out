@@ -11,7 +11,6 @@ Jogo iniciado com sucesso.
 Jogada efetuada com sucesso.
 Jogada efetuada com sucesso.
 O jogador A tem direito a outra jogada.
-O jogador B tem direito a outra jogada.
 Jogada efetuada com sucesso.
 Jogada efetuada com sucesso.
 Jogada efetuada com sucesso.
@@ -20,6 +19,7 @@ Jogada efetuada com sucesso.
 Jogada efetuada com sucesso.
 Jogada efetuada com sucesso.
 Jogada efetuada com sucesso.
-Jogada efetuada com sucesso.
-A [5] [0] [3] [3] [0] [0] (11)
-B [1] [0] [4] [3] [1] [10] (7)
+Jogo terminado.
+A 9
+B 39
+Não existe jogo em curso.
