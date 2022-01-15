@@ -11,13 +11,13 @@ def comando(instrucao):
         return controller.iniciar(instrucao[1], instrucao[2])
 
     elif instrucao[0]=='IJA' and len(instrucao)==3: #Iniciar Jogo Automático (IJA NomeJogador Nível)
-        pass
+        return controller.iniciar_auto(instrucao[1], instrucao[2])
 
     elif instrucao[0]=='DJ' and len(instrucao)==1: #Detalhes de Jogo (DJ)
         return controller.detalhes()
 
     elif instrucao[0]=='J' and len(instrucao)==3: #Efetuar Jogada (J NomeJogador Posição)
-        pass
+        return controller.jogada(instrucao[1], instrucao[2])
 
     elif instrucao[0]=='D' and len(instrucao)>1 and len(instrucao)<=3: #Desistir de Jogo (D NomeJogador NomeJogador)
         return controller.desistir(instrucao)
