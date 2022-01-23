@@ -6,23 +6,44 @@ def registar(player):
     for i in range(len(model.jogadores)): #Verifica se o Jogador já está registado
         if player == model.jogadores[i].get('Jogador'):
             return "Jogador existente."
+    if model.jogadores == []:
+        model.jogadores.append({'Jogador': "CPU", 'Jogos': 0, 'Vitorias': 0, 'Empates': 0, 'Derrotas': 0})
     model.jogadores.append({'Jogador': player, 'Jogos': 0, 'Vitorias': 0, 'Empates': 0, 'Derrotas': 0}) #Regista o Jogador
     return "Jogador registado com sucesso."
+
+def elementos_v(e):
+    return e['Vitorias']
+
+def elementos_j(e):
+    return e['Jogador']
 
 def listar(): #Retorna os valores das chaves 'Jogador' de cada dicionário na lista jogadores
     resultado = ""
     if len(model.jogadores)==0:
-        return "Sem jogadores registados."
-    else: #Organiza uma string com a scoreboard
-        for i in range(len(model.jogadores)): 
-            resultado += model.jogadores[i].get('Jogador') 
-            resultado += (" ") + str(model.jogadores[i].get('Jogos'))
-            resultado += (" ") + str(model.jogadores[i].get('Vitorias'))
-            resultado += (" ") + str(model.jogadores[i].get('Empates'))
-            resultado += (" ") + str(model.jogadores[i].get('Derrotas'))
-            if i != len(model.jogadores)-1:
-                resultado += ("\n") #Adiciona newline entre jogadores, de modo a não adicionar depois do último
-        return resultado #Sucesso, lista de jogadores
+        model.jogadores.append({'Jogador': "CPU", 'Jogos': 0, 'Vitorias': 0, 'Empates': 0, 'Derrotas': 0})
+        #return "Sem jogadores registados." #Nunca acontece
+    #else: #Organiza uma string com a scoreboard
+    model.jogadores.sort(reverse=True, key=elementos_v) #Organiza a lista de dicionários por valor de vitórias decrescente
+    temp = []
+    for _ in range(len(model.jogadores)-1): #Esta versão modificada de bubble sort faz com que os jogadores com o mesmo número de vitórias sejam ordenados alfabeticamente
+        for i in range(len(model.jogadores)-1):
+            if model.jogadores[i].get('Vitorias')==model.jogadores[i+1].get('Vitorias'):
+                temp.append(model.jogadores[i])
+                temp.append(model.jogadores[i+1])
+                temp.sort(key=elementos_j)
+                model.jogadores[i] = temp[0]
+                model.jogadores[i+1] = temp[1]
+                temp = []
+    
+    for i in range(len(model.jogadores)): 
+        resultado += model.jogadores[i].get('Jogador') 
+        resultado += (" ") + str(model.jogadores[i].get('Jogos'))
+        resultado += (" ") + str(model.jogadores[i].get('Vitorias'))
+        resultado += (" ") + str(model.jogadores[i].get('Empates'))
+        resultado += (" ") + str(model.jogadores[i].get('Derrotas'))
+        if i != len(model.jogadores)-1:
+            resultado += ("\n") #Adiciona newline entre jogadores, de modo a não adicionar depois do último
+    return resultado #Sucesso, lista de jogadores
 
 def iniciar(jogador_a, jogador_b): #Inicia um novo jogo entre dois jogadores e retorna a saída com sucesso ou insucesso
     flag = 0
@@ -99,6 +120,14 @@ def jogada(jogador, pos):
                 if vez == 'A':
                     oponente = 'B'
                 else: oponente = 'A'
+                if pos == 7:
+                    return f"O jogador {jogador} tem direito a outra jogada."
+                if vez != lado and model.jogo.get(vez+str(pos)) == 1: #Se a última casa estava vazia
+                    model.jogo.update({ #Retira as sementes da casa oposta para o poço
+                    vez+'7' : model.jogo.get(vez+'7')+model.jogo.get(oponente+str(pos)) + model.jogo.get(vez+str(pos)),
+                    oponente+str(pos) : 0,
+                    vez+str(pos) : 0 
+                    })
                 resultado = None
                 if model.jogo.get(vez+'1') == 0 and model.jogo.get(vez+'2') == 0 and model.jogo.get(vez+'3') == 0 and model.jogo.get(vez+'4') == 0 and model.jogo.get(vez+'5') == 0 and model.jogo.get(vez+'6') == 0: #Isto tem de ser visto
                     model.jogo.update({ #Se o jogador ficou sem sementes, o oponente move todas as sementes restantes para o seu poço
@@ -162,25 +191,6 @@ def jogada(jogador, pos):
                                 break
                     model.jogo = {}
                     return resultado
-                if pos == 1: #Serve para saber a casa oposta correta, visto que está disposta de forma a representar o ponto de vista do jogador #Isto também tem de ir à vida
-                    oposto = 6
-                elif pos == 2:
-                    oposto = 5
-                elif pos == 3:
-                    oposto = 4
-                elif pos == 4:
-                    oposto = 3
-                elif pos == 5:
-                    oposto = 2
-                elif pos == 6:
-                    oposto = 1
-                elif pos == 7:
-                    return f"O jogador {jogador} tem direito a outra jogada."
-                if vez != lado and model.jogo.get(vez+str(pos)) == 1: #Se a última casa estava vazia
-                    model.jogo.update({ #Retira as sementes da casa oposta para o poço
-                    vez+'7' : model.jogo.get(vez+'7')+model.jogo.get(oponente+str(oposto)),
-                    oponente+str(oposto) : 0 
-                    })
                 if vez == 'A':
                     model.jogo.update({'Vez': model.jogo.get('JogadorB')})
                 else: model.jogo.update({'Vez': model.jogo.get('JogadorA')})
