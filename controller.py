@@ -238,13 +238,17 @@ def jogada(jogador, pos):
                                             if jogo_temp.get('A'+str(temp_pos)) != 0: #Se a casa oposta tem algo
                                                 pos = i #Escolhe a posição proposta
                                                 flag = True
-                                                print("Escolhi uma pos")
                                                 break
                             if flag == False:
                                 for i in range(1,7):
+                                    if jogo_temp.get('B'+str(i))!=0 and jogo_temp.get('B'+str(i))==7-i: #Se o nº de sementes é igual às casas que faltam para o poço
+                                        pos = i
+                                        flag = True
+                                        break
+                            if flag == False:
+                                for i in range(6,0,-1):
                                     if model.jogo.get('B'+str(i))!=0:
                                         pos = i
-                                        print("Escolhi a mais à esquerda")
                                         break 
                             resultado_bot = jogada_valida('B', pos, 'CPU') #Nesta lógica, se existirem mais situações, escolhe a que estiver mais à esquerda
                             if resultado_bot != f"O jogador CPU tem direito a outra jogada.": break
