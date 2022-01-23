@@ -89,6 +89,101 @@ def detalhes(): #Mostra o tabuleiro do jogo em curso
         resultado = resultado + ' (' + str(lista[15]) + ')'
         return resultado #Sucesso, retorna uma string com os valores estruturados
 
+def jogada_valida(vez, pos, jogador):
+    lado = vez
+    num = model.jogo.get(lado+str(pos))
+    model.jogo.update({lado+str(pos): 0})
+    pos += 1
+    while num > 0: #Distribui as sementes pelas casas seguintes sequencialmente
+        while ((lado == vez and pos <= 7) or (lado != vez and pos < 7)) and num > 0:
+            model.jogo.update({lado+str(pos) : model.jogo.get(lado+str(pos))+1})
+            pos += 1
+            num -= 1
+        if lado == 'A':
+            lado = 'B'
+        else: lado = 'A'
+        if num > 0: pos = 1
+    pos -= 1
+    if vez == 'A':
+        oponente = 'B'
+    else: oponente = 'A'
+    if pos == 7:
+        return f"O jogador {jogador} tem direito a outra jogada."
+    if vez != lado and model.jogo.get(vez+str(pos)) == 1: #Se a última casa estava vazia
+        model.jogo.update({ #Retira as sementes da casa oposta para o poço
+        vez+'7' : model.jogo.get(vez+'7')+model.jogo.get(oponente+str(pos)) + model.jogo.get(vez+str(pos)),
+        oponente+str(pos) : 0,
+        vez+str(pos) : 0 
+        })
+    resultado = None
+    if model.jogo.get(vez+'1') == 0 and model.jogo.get(vez+'2') == 0 and model.jogo.get(vez+'3') == 0 and model.jogo.get(vez+'4') == 0 and model.jogo.get(vez+'5') == 0 and model.jogo.get(vez+'6') == 0: #Isto tem de ser visto
+        model.jogo.update({ #Se o jogador ficou sem sementes, o oponente move todas as sementes restantes para o seu poço
+        oponente+'7': model.jogo.get(oponente+'7')+model.jogo.get(oponente+'6')+model.jogo.get(oponente+'5')+model.jogo.get(oponente+'4')
+        +model.jogo.get(oponente+'3')+model.jogo.get(oponente+'2')+model.jogo.get(oponente+'1'),
+        oponente+'6': 0, oponente+'5': 0, oponente+'4': 0, oponente+'3': 0, oponente+'2': 0, oponente+'1': 0
+        })
+        resultado = f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}"
+    elif model.jogo.get(oponente+'1') == 0 and model.jogo.get(oponente+'2') == 0 and model.jogo.get(oponente+'3') == 0 and model.jogo.get(oponente+'4') == 0 and model.jogo.get(oponente+'5') == 0 and model.jogo.get(oponente+'6') == 0:
+        model.jogo.update({ #Se o oponente ficou sem sementes, o jogador move todas as sementes restantes para o seu poço. Isto acontece quando o jogador captura as ultimas sementes do oponente através de uma casa vazia
+        vez+'7': model.jogo.get(vez+'7')+model.jogo.get(vez+'6')+model.jogo.get(vez+'5')+model.jogo.get(vez+'4')
+        +model.jogo.get(vez+'3')+model.jogo.get(vez+'2')+model.jogo.get(vez+'1'),
+        vez+'6': 0, vez+'5': 0, vez+'4': 0, vez+'3': 0, vez+'2': 0, vez+'1': 0
+        })
+        resultado = f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}"
+    if resultado != None:
+        if model.jogo.get(vez+'7') > model.jogo.get(oponente+'7'):
+            for i in range(len(model.jogadores)):
+                if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+vez):
+                    model.jogadores[i].update({
+                        'Jogos' : model.jogadores[i].get('Jogos') + 1,
+                        'Vitorias' : model.jogadores[i].get('Vitorias') + 1
+                    })
+                    break
+            for i in range(len(model.jogadores)):
+                if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+oponente):
+                    model.jogadores[i].update({
+                        'Jogos' : model.jogadores[i].get('Jogos') + 1,
+                        'Derrotas' : model.jogadores[i].get('Derrotas') + 1
+                    })
+                    break
+        elif model.jogo.get(vez+'7') < model.jogo.get(oponente+'7'):
+            for i in range(len(model.jogadores)):
+                if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+oponente):
+                    model.jogadores[i].update({
+                        'Jogos' : model.jogadores[i].get('Jogos') + 1,
+                        'Vitorias' : model.jogadores[i].get('Vitorias') + 1
+                    })
+                    break
+            for i in range(len(model.jogadores)):
+                if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+vez):
+                    model.jogadores[i].update({
+                        'Jogos' : model.jogadores[i].get('Jogos') + 1,
+                        'Derrotas' : model.jogadores[i].get('Derrotas') + 1
+                    })
+                    break
+        else:
+            for i in range(len(model.jogadores)):
+                if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+vez):
+                    model.jogadores[i].update({
+                        'Jogos' : model.jogadores[i].get('Jogos') + 1,
+                        'Empates' : model.jogadores[i].get('Empates') + 1
+                    })
+                    break
+            for i in range(len(model.jogadores)):
+                if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+oponente):
+                    model.jogadores[i].update({
+                        'Jogos' : model.jogadores[i].get('Jogos') + 1,
+                        'Empates' : model.jogadores[i].get('Empates') + 1
+                    })
+                    break
+        model.jogo = {}
+        return resultado
+    if vez == 'A':
+        model.jogo.update({'Vez': model.jogo.get('JogadorB')})
+    else: model.jogo.update({'Vez': model.jogo.get('JogadorA')})
+    return resultado
+
+
 def jogada(jogador, pos):
     pos = int(pos)
     if model.jogo == {}:
@@ -103,101 +198,24 @@ def jogada(jogador, pos):
                 else: vez = 'B'
             else: return f"Não é a vez de {jogador}"
             if model.jogo.get(vez+str(pos)) > 0:
-                lado = vez
-                num = model.jogo.get(lado+str(pos))
-                model.jogo.update({lado+str(pos): 0})
-                pos += 1
-                while num > 0: #Distribui as sementes pelas casas seguintes sequencialmente
-                    while ((lado == vez and pos <= 7) or (lado != vez and pos < 7)) and num > 0:
-                        model.jogo.update({lado+str(pos) : model.jogo.get(lado+str(pos))+1})
-                        pos += 1
-                        num -= 1
-                    if lado == 'A':
-                        lado = 'B'
-                    else: lado = 'A'
-                    if num > 0: pos = 1
-                pos -= 1
-                if vez == 'A':
-                    oponente = 'B'
-                else: oponente = 'A'
-                if pos == 7:
-                    return f"O jogador {jogador} tem direito a outra jogada."
-                if vez != lado and model.jogo.get(vez+str(pos)) == 1: #Se a última casa estava vazia
-                    model.jogo.update({ #Retira as sementes da casa oposta para o poço
-                    vez+'7' : model.jogo.get(vez+'7')+model.jogo.get(oponente+str(pos)) + model.jogo.get(vez+str(pos)),
-                    oponente+str(pos) : 0,
-                    vez+str(pos) : 0 
-                    })
-                resultado = None
-                if model.jogo.get(vez+'1') == 0 and model.jogo.get(vez+'2') == 0 and model.jogo.get(vez+'3') == 0 and model.jogo.get(vez+'4') == 0 and model.jogo.get(vez+'5') == 0 and model.jogo.get(vez+'6') == 0: #Isto tem de ser visto
-                    model.jogo.update({ #Se o jogador ficou sem sementes, o oponente move todas as sementes restantes para o seu poço
-                    oponente+'7': model.jogo.get(oponente+'7')+model.jogo.get(oponente+'6')+model.jogo.get(oponente+'5')+model.jogo.get(oponente+'4')
-                    +model.jogo.get(oponente+'3')+model.jogo.get(oponente+'2')+model.jogo.get(oponente+'1'),
-                    oponente+'6': 0, oponente+'5': 0, oponente+'4': 0, oponente+'3': 0, oponente+'2': 0, oponente+'1': 0
-                    })
-                    resultado = f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}"
-                elif model.jogo.get(oponente+'1') == 0 and model.jogo.get(oponente+'2') == 0 and model.jogo.get(oponente+'3') == 0 and model.jogo.get(oponente+'4') == 0 and model.jogo.get(oponente+'5') == 0 and model.jogo.get(oponente+'6') == 0:
-                    model.jogo.update({ #Se o oponente ficou sem sementes, o jogador move todas as sementes restantes para o seu poço. Isto acontece quando o jogador captura as ultimas sementes do oponente através de uma casa vazia
-                    vez+'7': model.jogo.get(vez+'7')+model.jogo.get(vez+'6')+model.jogo.get(vez+'5')+model.jogo.get(vez+'4')
-                    +model.jogo.get(vez+'3')+model.jogo.get(vez+'2')+model.jogo.get(vez+'1'),
-                    vez+'6': 0, vez+'5': 0, vez+'4': 0, vez+'3': 0, vez+'2': 0, vez+'1': 0
-                    })
-                    resultado = f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}"
-                if resultado != None:
-                    if model.jogo.get(vez+'7') > model.jogo.get(oponente+'7'):
-                        for i in range(len(model.jogadores)):
-                            if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+vez):
-                                model.jogadores[i].update({
-                                    'Jogos' : model.jogadores[i].get('Jogos') + 1,
-                                    'Vitorias' : model.jogadores[i].get('Vitorias') + 1
-                                })
-                                break
-                        for i in range(len(model.jogadores)):
-                            if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+oponente):
-                                model.jogadores[i].update({
-                                    'Jogos' : model.jogadores[i].get('Jogos') + 1,
-                                    'Derrotas' : model.jogadores[i].get('Derrotas') + 1
-                                })
-                                break
-                    elif model.jogo.get(vez+'7') < model.jogo.get(oponente+'7'):
-                        for i in range(len(model.jogadores)):
-                            if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+oponente):
-                                model.jogadores[i].update({
-                                    'Jogos' : model.jogadores[i].get('Jogos') + 1,
-                                    'Vitorias' : model.jogadores[i].get('Vitorias') + 1
-                                })
-                                break
-                        for i in range(len(model.jogadores)):
-                            if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+vez):
-                                model.jogadores[i].update({
-                                    'Jogos' : model.jogadores[i].get('Jogos') + 1,
-                                    'Derrotas' : model.jogadores[i].get('Derrotas') + 1
-                                })
-                                break
+                resultado = jogada_valida(vez, pos, jogador)
+                if model.jogo.get('JogadorB') == 'CPU' and resultado != f"O jogador {jogador} tem direito a outra jogada.":
+                    if model.jogo.get('Nivel') == 'Normal':
+                        while True:
+                            for i in range(1,6):
+                                if model.jogo.get('B'+str(i))!=0:
+                                    pos = i
+                                    break
+                            resultado_bot = jogada_valida('B', pos, 'CPU')
+                            if resultado_bot != f"O jogador {jogador} tem direito a outra jogada.": break
+                        if resultado_bot == f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}":
+                            resultado = resultado_bot
                     else:
-                        for i in range(len(model.jogadores)):
-                            if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+vez):
-                                model.jogadores[i].update({
-                                    'Jogos' : model.jogadores[i].get('Jogos') + 1,
-                                    'Empates' : model.jogadores[i].get('Empates') + 1
-                                })
-                                break
-                        for i in range(len(model.jogadores)):
-                            if model.jogadores[i].get('Jogador') == model.jogo.get('Jogador'+oponente):
-                                model.jogadores[i].update({
-                                    'Jogos' : model.jogadores[i].get('Jogos') + 1,
-                                    'Empates' : model.jogadores[i].get('Empates') + 1
-                                })
-                                break
-                    model.jogo = {}
+                        pass
+                if resultado != None:
                     return resultado
-                if vez == 'A':
-                    model.jogo.update({'Vez': model.jogo.get('JogadorB')})
-                else: model.jogo.update({'Vez': model.jogo.get('JogadorA')})
                 return "Jogada efetuada com sucesso."
             else: return "Jogada inválida"
-        
-
     return "Jogador inexistente"
 
 def desistir(instrucao): #Mostra o tabuleiro do jogo em curso
