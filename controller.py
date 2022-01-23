@@ -224,7 +224,6 @@ def jogada(jogador, pos):
                                         temp_num = jogo_temp.get(temp_lado+str(temp_pos))
                                         jogo_temp.update({temp_lado+str(temp_pos): 0})
                                         temp_pos += 1
-                                        print(model.jogo)
                                         while temp_num > 0:
                                             while ((temp_lado == 'B' and temp_pos <= 7) or (temp_lado != 'B' and temp_pos < 7)) and temp_num > 0:
                                                 jogo_temp.update({temp_lado+str(temp_pos) : jogo_temp.get(temp_lado+str(temp_pos))+1})
@@ -235,7 +234,7 @@ def jogada(jogador, pos):
                                             else: temp_lado = 'A'
                                             if temp_num > 0: temp_pos = 1
                                         temp_pos -= 1
-                                        if jogo_temp.get(temp_lado+str(temp_pos))==1 and temp_lado == 'B' and temp_pos != 7: #Se a casa não tinha nada, era do lado do CPU e não era o poço
+                                        if jogo_temp.get('B'+str(temp_pos))==1 and temp_lado == 'A' and temp_pos != 7: #Se a casa não tinha nada, era do lado do CPU e não era o poço
                                             if jogo_temp.get('A'+str(temp_pos)) != 0: #Se a casa oposta tem algo
                                                 pos = i #Escolhe a posição proposta
                                                 flag = True
