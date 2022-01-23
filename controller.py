@@ -200,14 +200,14 @@ def jogada(jogador, pos):
             if model.jogo.get(vez+str(pos)) > 0:
                 resultado = jogada_valida(vez, pos, jogador)
                 if model.jogo.get('JogadorB') == 'CPU' and resultado != f"O jogador {jogador} tem direito a outra jogada.":
-                    if model.jogo.get('Nivel') == 'Normal':
+                    if model.jogo.get('Nivel').lower() == 'normal':
                         while True:
                             for i in range(1,6):
                                 if model.jogo.get('B'+str(i))!=0:
                                     pos = i
                                     break
                             resultado_bot = jogada_valida('B', pos, 'CPU')
-                            if resultado_bot != f"O jogador {jogador} tem direito a outra jogada.": break
+                            if resultado_bot != f"O jogador CPU tem direito a outra jogada.": break
                         if resultado_bot == f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}":
                             resultado = resultado_bot
                     else:
