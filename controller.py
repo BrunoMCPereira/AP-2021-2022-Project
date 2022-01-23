@@ -109,7 +109,7 @@ def jogada_valida(vez, pos, jogador):
     else: oponente = 'A'
     if pos == 7:
         return f"O jogador {jogador} tem direito a outra jogada."
-    if vez != lado and model.jogo.get(vez+str(pos)) == 1: #Se a última casa estava vazia
+    if vez != lado and model.jogo.get(vez+str(pos)) == 1 and model.jogo.get(oponente+str(pos)) != 0: #Se a última casa estava vazia e a do oponente tem algo
         model.jogo.update({ #Retira as sementes da casa oposta para o poço
         vez+'7' : model.jogo.get(vez+'7')+model.jogo.get(oponente+str(pos)) + model.jogo.get(vez+str(pos)),
         oponente+str(pos) : 0,
@@ -200,7 +200,7 @@ def jogada(jogador, pos):
             if model.jogo.get(vez+str(pos)) > 0:
                 resultado = jogada_valida(vez, pos, jogador)
                 if model.jogo.get('JogadorB') == 'CPU' and resultado != f"O jogador {jogador} tem direito a outra jogada.":
-                    if model.jogo.get('Nivel').lower() == 'normal':
+                    if model.jogo.get('Nivel') == 'Normal':
                         while True:
                             for i in range(1,6):
                                 if model.jogo.get('B'+str(i))!=0:
@@ -210,8 +210,47 @@ def jogada(jogador, pos):
                             if resultado_bot != f"O jogador CPU tem direito a outra jogada.": break
                         if resultado_bot == f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}":
                             resultado = resultado_bot
-                    else:
-                        pass
+                    elif model.jogo.get('Nivel') == 'Avançado':
+                        while True:
+                            flag = False
+                            if flag == False:
+                                for i in range(1,7):
+                                    jogo_temp = {}
+                                    jogo_temp.update(model.jogo)
+                                    if jogo_temp.get('B'+str(i))!=0: #Propõe uma posição
+                                        temp_pos = i
+                                        #Simula a distribuição das sementes pelas casas seguintes sequencialmente
+                                        temp_lado = 'B'
+                                        temp_num = jogo_temp.get(temp_lado+str(temp_pos))
+                                        jogo_temp.update({temp_lado+str(temp_pos): 0})
+                                        temp_pos += 1
+                                        print(model.jogo)
+                                        while temp_num > 0:
+                                            while ((temp_lado == 'B' and temp_pos <= 7) or (temp_lado != 'B' and temp_pos < 7)) and temp_num > 0:
+                                                jogo_temp.update({temp_lado+str(temp_pos) : jogo_temp.get(temp_lado+str(temp_pos))+1})
+                                                temp_pos += 1
+                                                temp_num -= 1
+                                            if temp_lado == 'A':
+                                                temp_lado = 'B'
+                                            else: temp_lado = 'A'
+                                            if temp_num > 0: temp_pos = 1
+                                        temp_pos -= 1
+                                        if jogo_temp.get(temp_lado+str(temp_pos))==1 and temp_lado == 'B' and temp_pos != 7: #Se a casa não tinha nada, era do lado do CPU e não era o poço
+                                            if jogo_temp.get('A'+str(temp_pos)) != 0: #Se a casa oposta tem algo
+                                                pos = i #Escolhe a posição proposta
+                                                flag = True
+                                                print("Escolhi uma pos")
+                                                break
+                            if flag == False:
+                                for i in range(1,7):
+                                    if model.jogo.get('B'+str(i))!=0:
+                                        pos = i
+                                        print("Escolhi a mais à esquerda")
+                                        break 
+                            resultado_bot = jogada_valida('B', pos, 'CPU') #Nesta lógica, se existirem mais situações, escolhe a que estiver mais à esquerda
+                            if resultado_bot != f"O jogador CPU tem direito a outra jogada.": break
+                        if resultado_bot == f"Jogo terminado.\n{model.jogo.get('JogadorA')} {model.jogo.get('A7')}\n{model.jogo.get('JogadorB')} {model.jogo.get('B7')}":
+                            resultado = resultado_bot        
                 if resultado != None:
                     return resultado
                 return "Jogada efetuada com sucesso."
