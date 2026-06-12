@@ -1,445 +1,151 @@
-# [Algoritmia e Programação 2021 2022](https://elearning.ual.pt/course/view.php?id=2167) - [UAL](https://autonoma.pt/) <!-- omit in toc -->
+# Mancala
 
-## Projeto <!-- omit in toc -->
+Projeto em Python que implementa uma versao de terminal do jogo Mancala.
 
-- [Datas Relevantes](#datas-relevantes)
-- [Descrição](#descrição)
-  - [Regras](#regras)
-  - [Jogo automático](#jogo-automático)
-- [Instruções](#instruções)
-  - [Registar jogador (RJ)](#registar-jogador-rj)
-  - [Listar jogadores (LJ)](#listar-jogadores-lj)
-  - [Iniciar jogo (IJ)](#iniciar-jogo-ij)
-  - [Iniciar jogo automático (IJA)](#iniciar-jogo-automático-ija)
-  - [Detalhes de jogo (DJ)](#detalhes-de-jogo-dj)
-  - [Efetuar jogada (J)](#efetuar-jogada-j)
-  - [Desistir de jogo (D)](#desistir-de-jogo-d)
-  - [Gravar (G)](#gravar-g)
-  - [Ler (L)](#ler-l)
-- [Estrutura do projeto](#estrutura-do-projeto)
-- [Testes de *input*/*output*](#testes-de-inputoutput)
-  - [Utilização de testes](#utilização-de-testes)
-- [Entrega](#entrega)
-- [Prova de Autoria](#prova-de-autoria)
-- [Tecnologias](#tecnologias)
-- [Grupo de trabalho](#grupo-de-trabalho)
-- [Avaliação](#avaliação)
+O programa permite jogar entre dois jogadores humanos ou contra um jogador automatico (`CPU`). A interface principal e feita por menus no terminal e apresenta um tabuleiro visual atualizado a cada jogada.
 
-## Datas Relevantes
+## Funcionalidades
 
-| Data                      | Evento                               |
-|---------------------------| ------------------------------------ |
-| 16/11/2021                | Disponibilização do enunciado.       |
-| 23/01/2022 23:59:59 GMT   | Entrega final do trabalho.           |
-| 25/01/2022 --- 04/02/2022 | Provas de autoria.                   |
+- Registo de jogadores.
+- Listagem de jogadores e estatisticas.
+- Novo jogo entre dois jogadores humanos.
+- Novo jogo contra CPU.
+- Dois niveis de CPU: `Normal` e `Avancado`.
+- Tabuleiro desenhado no terminal.
+- Jogadas feitas diretamente no ecra do jogo, escolhendo casas de `1` a `6`.
+- Gravacao de jogos durante uma partida.
+- Listagem de jogos gravados para continuar mais tarde.
+- Modo por comandos mantido para testes de input/output.
 
-## Descrição
+## Regras do jogo
 
-*Mancala* corresponde a um tipo de jogo de tabuleiro, para dois jogadores competitivos, onde o objetivo é capturar peças.
+O tabuleiro tem duas filas de seis casas. Cada casa comeca com quatro sementes.
 
-Este projeto pretende a implementação de uma versão popular da Mancala.
+Em cada jogada, o jogador escolhe uma casa da sua fila. As sementes dessa casa sao distribuidas uma a uma pelas casas seguintes, pelo proprio poco e pela fila adversaria, sem colocar sementes no poco do adversario.
 
-Nesta versão, o tabuleiro consiste em 12 *casas* dispostas em duas filas. Cada fila pertence a um jogador. No início do jogo, cada casa tem 4 *sementes* (i.e., peças). Nas laterais do tabuleiro existem duas casas grandes denominadas *poços*.
+Regras especiais:
 
-![](figures/mancala_board.png)
+- Se a ultima semente cair no proprio poco, o jogador tem direito a outra jogada.
+- Se a ultima semente cair numa casa vazia da propria fila, o jogador captura essa semente e as sementes da casa oposta do adversario.
+- O jogo termina quando uma das filas fica sem sementes.
+- As sementes restantes da outra fila sao colocadas no poco correspondente.
+- Vence quem tiver mais sementes no poco.
 
-O objetivo geral do jogo é capturar o maior número de sementes no poço, e a mecânica consiste em mover as sementes entre casas e poços, de acordo com um conjunto de regras, no sentido inverso aos ponteiros do relógio.
+## Como executar
 
-### Regras
+Abrir um terminal na pasta do projeto:
 
-O jogo inicia com 48 sementes, 4 por casa.
+```powershell
+cd C:\Github\mancala
+```
 
-Cada jogador efetua uma jogada, à vez. Numa jogada, o jogador seleciona uma casa com sementes na sua fila, retira-as da casa, e deixa-as, uma a uma, nas casas adjacentes da sua fila, no seu próprio poço, e na fila do adversário (excluindo o poço do adversário), no sentido inverso aos ponteiros do relógio.
+Executar:
 
-![](figures/mancala_play.png)
+```powershell
+python program.py
+```
 
-Regra A
-: Se a última semente colocada for no poço, tem direito a uma nova jogada.
+No VS Code, abre a pasta `C:\Github\mancala`, confirma que tens um Python Interpreter selecionado e corre o comando acima no terminal integrado.
 
-Regra B
-: Se a última semente colocada for numa casa vazia da própria fila, tem direito a capturar essa semente, e todas as sementes da casa em frente, na fila do adversário. As sementes capturadas são colocadas no poço.
+## Menu principal
 
-O jogo termina quando, depois de uma jogada, uma das filas fica sem sementes. O jogador que ainda tiver peças na sua fila captura-as para o seu poço. O vencedor é o jogador com mais sementes no poço.
+Ao iniciar o programa no terminal, aparece o menu:
 
-### Jogo automático
+```text
+1 - Novo jogo
+2 - Continuar jogo gravado
+3 - Registar jogador
+4 - Jogadores registados
+0 - Sair
+```
 
-Deve ser possível jogar contra o computador. Nesse caso, o jogador humano será o Jogador A, e o Jogador B corresponde a um jogador automático.
+### Novo jogo
 
-Para esse efeito serão considerados dois níveis de dificuldade: Normal, e Avançado.
+Permite escolher:
 
-No nível **Normal**, o jogador automático opta pela seguinte estratégia:
+- Jogador contra jogador.
+- Jogador contra CPU.
 
-1. Seleciona a casa mais à esquerda possível para espalhar sementes.
+Durante a criacao do jogo, o programa mostra os jogadores registados e permite selecionar um deles ou registar um novo.
 
-No nível **Avançado**, o  jogador automático opta pelos seguintes passos, por ordem:
+No jogo contra CPU, tambem e pedido o nivel:
 
-1. Se possível, seleciona uma casa que permita capturar as peças de uma das casas do oponente (ver Regra B).
-2. Se possível, seleciona uma casa que permita terminar no poço, de forma a jogar novamente. Se existirem várias na mesma situação, opta pela mais à esquerda possível (ver Regra A).
-3. Seleciona a casa mais à direita possível para espalhar sementes.
+- `Normal`
+- `Avancado`
 
-O nome do jogador autómatico, para efeitos de listagem de jogadores, é `CPU`.
+### Durante o jogo
 
-## Instruções
+O terminal mostra o tabuleiro e as opcoes:
 
-Na descrição das várias instruções é indicada a sua sintaxe. Os argumentos são separados por espaços em branco, e cada linha é terminada por um caráter fim de linha.
+```text
+1-6 - Jogar casa
+G   - Gravar jogo
+D   - Desistir
+M   - Voltar ao menu principal
+```
 
-Para cada instrução são indicadas as expressões de saída, quer para execuções com sucesso, quer para insucesso.
-
-No caso de insucesso só deve surgir uma mensagem de erro. Verificando-se várias situações de insucesso em simultâneo, deve surgir apenas a mensagem do primeiro cenário, de acordo com a ordem de saídas de insucesso descritas para cada instrução.
-
-Caso o utilizador introduza uma instrução inválida, ou seja, não prevista na lista de instruções desta secção, ou um número de parâmetros errado para uma instrução existente, o programa deve escrever:
-
-    Instrução inválida.
-
-Pode assumir que não existem erros de representação de informação (e.g., texto em vez de valores numéricos).
-
-A descrição de cada instrução pretende ser exaustiva, sem ambiguidades, e suficiente. Não deve ser possível optar entre vários comportamentos possíveis na mesma situação. Se essa situação ocorrer deve entrar em contacto com equipa docente.
-
-A implementação não deve suportar mais instruções do que as que estão descritas.
-
-O programa termina quando for introduzida uma linha em branco, fora do contexto de uma instrução.
-
-### Registar jogador (RJ)
-
-Regista um novo jogador.
-
-`NomeJogador` é o nome de um jogador.
-
-Entrada:
-
-    RJ NomeJogador
-
-Saída com sucesso:
-
-    Jogador registado com sucesso.
-
-Saída com insucesso:
-
-- Quando já existe um jogador registado com o mesmo nome:
-
-      Jogador existente.
-
-### Listar jogadores (LJ)
-
-Lista os jogadores registados, indicando os registos de jogos jogados. Os jogadores são ordenados por número decrescente  de vitórias, e alfabeticamente para jogadores com o mesmo número de vitórias.
-
-`NomeJogador` é o nome de um jogador. `NumJogos` representa o número de jogos jogados, `NumVitórias` representa o número de vitórias, `NumEmpates` representa o número de empates, e `NumDerrotas` represente o número de derrotas do jogador.
-
-Entrada:
-
-    LJ
-
-Saída com sucesso:
-
-    NomeJogador NumJogos NumVitórias NumEmpates NumDerrotas
-    NomeJogador NumJogos NumVitórias NumEmpates NumDerrotas
-    ...
-
-Saída com insucesso:
-
-- Quando não existem jogadores registados:
-
-      Sem jogadores registados.
-
-### Iniciar jogo (IJ)
-
-Inicia um novo jogo entre dois jogadores.
-
-`NomeJogadorA` e `NomeJogadorB` são os nomes dos jogadores A e B, respetivamente.
-
-Entrada:
-
-    IJ NomeJogadorA NomeJogadorB
-
-Saída com sucesso:
-
-    Jogo iniciado com sucesso.
-
-Saída com insucesso:
-
-- Quando já existe um jogo em curso:
-
-      Existe um jogo em curso.
-
-- Quando um dos jogadores indicados não se encontra registado:
-
-      Jogador inexistente.
-
-### Iniciar jogo automático (IJA)
-
-Inicia um novo jogo contra um jogador automático.
-
-`NomeJogador` é o nome de um jogador registado, e `Nível` é o nível de dificuldade do jogador automático (ver [descrição](#jogo-automático)).
-
-Entrada:
-
-    IJA NomeJogador Nível
-
-Saída com sucesso:
-
-    Jogo automático de nível Nível iniciado com sucesso.
-
-Saída com insucesso:
-
-- Quando já existe um jogo em curso:
-
-      Existe um jogo em curso.
-
-- Quando o jogador indicado não se encontra registado:
-
-      Jogador inexistente.
-
-### Detalhes de jogo (DJ)
-
-Mostra os detalhes do jogo em curso. No ponto de vista de cada jogador, de frente para o tabuleiro, mostra o número de sementes nas 6 casas correspondentes, iniciando na casa mais à esquerda, e terminando no poço.
-
-`NomeJogadorA` e `NomeJogadorB` são os nomes dos jogadores A e B, respetivamente. `NumSementes` é o número de sementes atualmente numa posição. Casas são apresentadas com parêntesis retos, e poços com parêntesis curvos.
-
-Entrada:
-
-    DJ
-
-Saída com sucesso:
-
-    NomeJogadorA [NumSementes] [NumSementes] [NumSementes] [NumSementes] [NumSementes] [NumSementes] (NumSementes)
-    NomeJogadorB [NumSementes] [NumSementes] [NumSementes] [NumSementes] [NumSementes] [NumSementes] (NumSementes)
-
-Saída com insucesso:
-
-- Quando não existe um jogo em curso:
-
-      Não existem jogo em curso.
-
-### Efetuar jogada (J)
-
-Efetua uma jogada, indicando o número da casa correspondente, de acordo com o ponto de vista de cada jogador, de frente para o tabuleiro. A casa mais à esquerda tem identificador 1, e a mais à direita valor 6.
-
-`NomeJogador` é o nome de um jogador. `Posição` é o identificador de uma casa (entre 1 e 6).
-
-`NomeJogadorA` e `NomeJogadorB` são os nomes dos jogadores A e B, respetivamente. `NumSementes` é o número de sementes no poço, após o fim do jogo.
-
-Entrada:
-
-    J NomeJogador Posição
-
-Saída com sucesso:
-
-Nota: Deve surgir apenas uma saída com sucesso, com prioridade indicada pela seguinte ordem de saídas.
-
-- Quando o jogo termina:
-
-      Jogo terminado.
-      NomeJogadorA NumSementes
-      NomeJogadorB NumSementes
-
-- Quando o jogador tem direito a uma nova jogada:
-
-      O jogador NomeJogador tem direito a outra jogada.
-
-- Quando a jogada termina:
-
-      Jogada efetuada com sucesso.
-
-Saída com insucesso:
-
-- Quando não existe um jogo em curso:
-
-      Não existem jogo em curso.
-
-- Quando o jogador indicado não existe:
-
-      Jogador inexistente.
-
-- Quando o jogador indicado não participa no jogo em curso:
-
-      Jogador não participa no jogo em curso.
-
-### Desistir de jogo (D)
-
-Regista a desistência do jogo por um ou dois jogador. No jogo automático apenas o jogador humano pode desistir. É registada uma derrota para cada jogador que desistiu, ou para ambos, caso os dois desistam. É registada uma vitória para o jogador que não desistiu.
-
-`NomeJogador` representa o nome de um jogador que participa no jogo em curso.
-
-Entrada:
-
-Nota: o segundo `NomeJogador` é opcional.
-
-    D NomeJogador NomeJogador
-
-Saída com sucesso:
-
-    Jogo terminado com sucesso.
-
-Saída com insucesso:
-
-- Quando não existe jogo em curso:
-
-      Não existe jogo em curso.
-
-- Quando um dos nomes indicados não pertence a um jogador registado:
-
-      Jogador inexistente.
-
-- Quando um dos jogadores indicados não participa no jogo em curso:
-
-      Jogador não participa no jogo em curso.
-
-### Gravar (G)
-
-Grava o estado do programa num ficheiro. Deve ser possível continuar o jogo em curso (se existir) após leitura do ficheiro gerado.
-
-`NomeFicheiro` é o nome do ficheiro onde será feita a gravação.
-
-Entrada:
-
-    G NomeFicheiro
-
-Saída com sucesso:
-
-    Jogo gravado com sucesso.
-
-Saída com insucesso: nenhuma.
-
-### Ler (L)
-
-Recupera o estado do programa de um ficheiro. Deve ser possível continuar o jogo em curso (se existir) após leitura do ficheiro.
-
-`NomeFicheiro` é o nome do ficheiro de onde será feita a leitura.
-
-Entrada:
-
-    L NomeFicheiro
-
-Saída com sucesso:
-
-    Jogo lido com sucesso.
-
-Saída com insucesso: nenhuma.
+A opcao `G` grava o jogo atual num ficheiro `.txt`. Os jogos gravados ficam disponiveis no menu `Continuar jogo gravado`.
 
 ## Estrutura do projeto
 
-A estrutura to projeto está deve ser a seguinte:
+```text
+mancala
+|-- program.py        # Ponto de entrada do programa
+|-- cli.py            # Menus, interface de terminal e modo por comandos
+|-- controller.py     # Logica do jogo, jogadores, CPU e gravacao/leitura
+|-- model.py          # Estado global do jogo e dos jogadores
+|-- iotests/          # Testes publicos de input/output
+|-- figures/          # Imagens do enunciado original
+|-- REPORT.md         # Relatorio do projeto
+```
 
-      projeto
-      |-- iotests : testes de output, a distribuir pela docência
-      |-- program.py : ponto de entrada do programa
-      |-- README.md : este ficheiro
-      |-- REPORT.md : relatório do projeto
+## Modo por comandos
 
-O repositório de referência está disponível em <https://github.com/UAL-AP/AP-2021-2022-Project>
+Apesar da interface por menus, o programa continua a aceitar comandos quando recebe input redirecionado. Isto permite executar os testes existentes.
 
-Para efetuar a atualizações:
+Exemplo:
 
-1. Registar o repositório como `upstream` (só deve acontecer uma vez)
+```powershell
+python program.py < iotests\1.in
+```
 
-        git remote add upstream https://github.com/UAL-AP/AP-2021-2022-Project
+Tambem e possivel guardar a saida:
 
-2. Atualizar o `upstream` (sempre que existirem atualizações)
+```powershell
+python program.py < iotests\1.in > 1.mine.out
+```
 
-        git fetch upstream
+## Comandos suportados no modo de testes
 
-3. Obter as alterações (e.g., ficheiro `README.md`)
+```text
+RJ NomeJogador
+LJ
+IJ NomeJogadorA NomeJogadorB
+IJA NomeJogador Nivel
+DJ
+J NomeJogador Posicao
+D NomeJogador
+D NomeJogador NomeJogador
+G NomeFicheiro
+L NomeFicheiro
+```
 
-        git checkout upstream/main README.md
+## Requisitos
 
-## Testes de *input*/*output*
+- Python 3
+- Nao sao usadas bibliotecas externas.
 
-O projeto é validado através de um conjunto de baterias de teste de *input*/*output*.
+## Estado atual dos testes
 
-Cada bateria é constituída por um ficheiro de entrada e outro e saída. O ficheiro de entrada contém uma sequência de instruções a passar pelo programa que, por sua vez, deve produzir uma sequência de saída *exatamente* igual ao ficheiro de saída. A comparação será feita *byte* a *byte*, pelo que não podem existir quaisquer diferenças para o programa ser considerado válido.
+Os testes publicos de input/output continuam disponiveis na pasta `iotests`.
 
-Os grupos de trabalho devem utilizar as baterias públicas para validar o desenvolvimento do projeto.
+No estado atual:
 
-As baterias serão distribuídas através do repositório git de referência, na diretoria `iotests` (será necessário registar o repositório de referência como `upstream`, de acordo com as instruções na secção sobre [estrutura do projeto](#estrutura-do-projeto)).
+- `iotests\1` passa.
+- `iotests\2` passa.
+- `iotests\6` passa.
+- `iotests\3`, `iotests\4` e `iotests\5` ainda diferem em sequencias ligadas ao CPU e a jogadas consideradas invalidas pela implementacao atual.
 
-### Utilização de testes
+## Autores
 
-Os três testes disponibilizados devem ser utilizados por ordem, já que os cenários descritos num teste podem depender dos cenários dos testes anteriores. Cada teste deve ser utilizado da seguinte forma:
-
-    python program.py < 1.in > 1.mine.out
-
-A instrução `<` redireciona o *standard input* para o ficheiro indicado, e a instrução `>` redireciona o *standard output* para o ficheiro indicado (cria se não existir, e escreve por cima se existir).
-
-O `ficheiro 1.in` contém várias instruções para testar o programa. O ficheiro `1.out` contém as saídas correspondentes às instruções no `ficheiro 1.in`. O ficheiro `1.mine.out` será criado com as saídas que o programa gerar. Os ficheiros `1.out` e `1.mine.out` devem ser
-idênticos.
-
-A comparação entre ficheiros pode ser feita na linha de comandos, recorrendo ao programa `comp` em Windows, ou `diff` em Linux e MacOS.
-
-A comparação também pode ser feita recorrendo a alguns IDEs ou editores de texto, tal como o *Visual Studio Code*. Para tal, abra o diretório do projeto em *File - Open Folder*. Selecione o diretório do projeto confirme em *Select Folder*. Caso não esteja visível, abra o explorador de ficheiros do *Visual Studio Code* em *View - Explorer*.
-
-Selecione os dois ficheiros a comparar (selecione um, e selecione o outro enquanto pressiona na tecla `Ctrl`).
-
-![](figures/vsc_two_file_selection.png)
-
-Com os dois ficheiros selecionados, utilize o botão direito do rato em cima da seleção para obter um menu. Escolha *Compare Selected*.
-
-![](figures/vsc_compare_selected.png)
-
-O *Visual Studio Code* apresenta os dois ficheiros com as diferenças a vermelho e verde. Caso não existam diferenças, as linhas dos dois ficheiros surgem sem cores.
-
-![](figures/vsc_diff.png)
-
-## Entrega
-
-A entrega do projeto é feita no *GitHub Classroom* e na plataforma de *e-learning*.
-
-A entrega no *e-learning* corresponde a um ficheiro `zip` do repositório *GitHub Classroom*.
-
-Deve existir, na raiz do repositório:
-
-- Um ficheiro chamado `program.py`, que será executado com as instruções dos testes;
-- Um ficheiro de relatório `REPORT.md` com a identificação dos elementos do grupo de trabalho, e eventuais comentários relativos a estratégias de implementação adotadas, e/ou à distribuição de tarefas.
-
-O código fonte entregue será sujeito a validação com um conjunto de testes reservado para esse efeito.
-
-A ausência de identificação individual no ficheiro de relatório implica a anulação da participação individual no projeto.
-
-## Prova de Autoria
-
-Todos os projetos entregues serão sujeitos a prova de autoria. Para esse efeito, cada grupo terá que efetuar uma discussão com a docência, de forma a demonstrar que o código entregue foi de facto feito pelo grupo, e que a distribuição de trabalho foi equilibrada.
-
-O calendário das provas de autoria será disponibilizado no *e-learning*, após o prazo de entrega da implementação do projeto.
-
-A não comparência na prova de autoria implica a anulação da participação individual no projeto.
-
-## Tecnologias
-
-O trabalho deve ser implementado em Python 3 (versão 3.10). Não podem ser
-utilizadas bibliotecas externas à distribuição padrão. No caso de dúvida, os
-corpo docente docentes deve ser consultado.
-
-## Grupo de trabalho
-
-Os grupos de trabalho devem ter 4 pessoas, e são constituídos no início do
-semestre. Idealmente, todos os elementos do grupo devem participar em todos os
-aspetos do projeto. No entanto, pode existir divisão de tarefas, sendo que esta
-deve ser equilibrada.
-
-Grupos com um número diferente de pessoas devem ser explicitamente autorizados pelo corpo docente.
-
-## Avaliação
-
-O projeto é avaliado com base em duas componentes: quantitativa (*A*), e qualitativa (*B*). A nota final do projeto é determinada por *(0.5 x A) + (0.5 x B)*.
-
-| Instrução | Peso |
-| --------- | ---- |
-| RJ        | 2    |
-| LJ        | 2    |
-| IJ        | 2    |
-| IJA       | 4    |
-| DJ        | 2    |
-| J         | 3    |
-| D         | 3    |
-| G         | 1    |
-| L         | 1    |
-
-A avaliação qualitativa irá considerar que existem várias formas de resolver o problema descrito, mas exige-se a utilização dos instrumentos e métodos apresentados na unidade curricular de Algoritmia e Programação, nomeadamente:
-
-- Separação entre interface, dados, e lógica da aplicação
-- Justificação clara para as variáveis e operações implementadas
-- Organização da solução coerente com a metodologia apresentada na disciplina
-- Adequação da escolha de estruturas de dados e algoritmos para a resolução do problema
-
-A implementação estrita de todas as instruções descritas neste enunciado assegura, sem prejuízo de reprovação por irregularidade académica, a nota mínima de 10 valores.
-
-As notas finais do projeto serão disponibilizadas no *e-learning*.
+Ver `REPORT.md`.
